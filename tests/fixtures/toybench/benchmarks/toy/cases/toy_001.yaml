@@ -1,0 +1,10 @@
+id: toy_001
+status: gold
+tags: [geo]
+question: "What is the capital of France?"
+expected:
+  answer: Paris
+  rubric:
+    critical: [answer_matches]
+world_truth:
+  note: "The answer is Paris, obviously"

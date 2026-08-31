@@ -1,0 +1,23 @@
+benchkit: ">=0.1,<0.2"
+langfuse:
+  project: toy
+benchmarks:
+  toy:
+    path: benchmarks/toy
+    cases: cases/**/*.yaml
+    oracle_schema: schema/oracle.schema.json
+    output_schema: schema/output.schema.json
+    render: benchmarks.toy.render:render
+    evaluators: benchmarks.toy.evaluators:EVALUATORS
+    invariants: benchmarks.toy.validate:INVARIANTS
+    datasets:
+      gold:  { name: toy-gold,  select: "status == 'gold'" }
+      draft: { name: toy-draft, select: "status in ('reviewed', 'gold')" }
+      all:   { name: toy-all,   select: "True" }
+      tagged: { name: toy-tagged, select: "'math' in tags", prefix_ids: true }
+    prompts:
+      plain:      { name: toy-prompt, label: production }
+      structured: { name: toy-prompt-structured, label: production, output_schema: true }
+    models:
+      default: primary
+      primary: toy-model-1

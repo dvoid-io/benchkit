@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.27", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "benchkit"
+description = "Manifest-driven LLM benchmark toolkit: git-managed cases -> Langfuse datasets/experiments, evaluator harness, authoring skills"
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["version"]
+authors = [{ name = "dvoid" }]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+  "langfuse>=4.14,<5",
+  "jsonschema>=4.23",
+  "pyyaml>=6",
+  "click>=8.1",
+  "packaging",
+  # imported directly by experiment.py/export.py; langfuse happens to pull it in today,
+  # but a direct import must be a direct dependency.
+  "httpx>=0.27",
+]
+
+[project.scripts]
+benchkit = "benchkit.cli:main"
+
+[project.urls]
+Repository = "https://github.com/dvoid-io/benchkit"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.8"]
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/benchkit/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/benchkit", "plugins", "tests", "README.md", "CONTRACT.md", "pyproject.toml"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/benchkit"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"plugins/benchkit" = "benchkit/_plugin"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]

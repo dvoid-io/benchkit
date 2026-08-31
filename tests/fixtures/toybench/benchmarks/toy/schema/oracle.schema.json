@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "toy case schema",
+  "type": "object",
+  "required": ["id", "status", "question", "expected"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^toy_[0-9]{3}$" },
+    "status": { "type": "string", "enum": ["draft", "reviewed", "gold"] },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "question": { "type": "string", "minLength": 1 },
+    "expected": {
+      "type": "object",
+      "required": ["answer"],
+      "properties": {
+        "answer": { "type": "string" },
+        "rubric": { "type": "object", "properties": { "critical": { "type": "array", "items": { "type": "string" } } } }
+      }
+    },
+    "world_truth": { "type": "object" },
+    "leak_guard": { "type": "boolean" }
+  }
+}
