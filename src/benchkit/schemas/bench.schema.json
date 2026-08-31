@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dvoid-io/benchkit/schemas/bench.schema.json",
+  "title": "benchkit manifest (bench.yaml) — contract 0.1",
+  "type": "object",
+  "required": ["benchkit", "benchmarks"],
+  "additionalProperties": false,
+  "properties": {
+    "benchkit": {
+      "type": "string",
+      "description": "PEP 440 specifier benchkit checks its own version against, e.g. \">=0.1,<0.2\""
+    },
+    "langfuse": {
+      "type": "object",
+      "description": "Informational only; keys come from the environment.",
+      "properties": {
+        "project": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "benchmarks": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[A-Za-z0-9_.-]+$" },
+      "additionalProperties": { "$ref": "#/$defs/benchmark" }
+    }
+  },
+  "$defs": {
+    "moduleAttr": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$",
+      "description": "module:attr, resolved with the manifest directory at sys.path[0]"
+    },
+    "benchmark": {
+      "type": "object",
+      "required": ["path", "cases", "oracle_schema", "output_schema", "render", "evaluators", "datasets", "prompts"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "cases": { "type": "string", "minLength": 1 },
+        "oracle_schema": { "type": "string", "minLength": 1 },
+        "output_schema": { "type": "string", "minLength": 1 },
+        "render": { "$ref": "#/$defs/moduleAttr" },
+        "evaluators": { "$ref": "#/$defs/moduleAttr" },
+        "invariants": { "$ref": "#/$defs/moduleAttr" },
+        "datasets": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/dataset" }
+        },
+        "prompts": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/prompt" }
+        },
+        "models": {
+          "type": "object",
+          "description": "Model aliases for `experiment`; `default` is used when --model is omitted. Values are gateway model ids (or another alias).",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["name", "select"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "select": { "type": "string", "minLength": 1 },
+        "prefix_ids": { "type": "boolean", "default": false },
+        "description": { "type": "string" }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "label": { "type": "string" },
+        "version": { "type": "integer", "minimum": 1 },
+        "type": { "type": "string", "enum": ["text", "chat"] },
+        "output_schema": { "type": "boolean", "default": false },
+        "response_format": {
+          "type": "string",
+          "enum": ["json_schema", "none"],
+          "default": "json_schema",
+          "description": "Only meaningful with output_schema: true. json_schema -> send response_format json_schema; none -> send nothing (fenced JSON still parsed)."
+        },
+        "strict": { "type": "boolean", "default": false, "description": "json_schema.strict flag (Anthropic's OpenAI-compatible endpoint requires true; LiteLLM/OpenAI accept false)." }
+      }
+    }
+  }
+}

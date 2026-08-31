@@ -1,0 +1,6 @@
+id: toy_003
+status: draft
+tags: [math, geo]
+question: "How many continents are there?"
+expected:
+  answer: "7"

@@ -1,0 +1,8 @@
+{
+  "name": "benchkit",
+  "version": "0.1.0",
+  "description": "benchkit skills: validate/render/sync/experiment a bench.yaml spec repo against Langfuse, and author cases that satisfy a benchmark's oracle schema.",
+  "author": { "name": "dvoid" },
+  "repository": "https://github.com/dvoid-io/benchkit",
+  "keywords": ["langfuse", "benchmark", "datasets", "evaluation"]
+}

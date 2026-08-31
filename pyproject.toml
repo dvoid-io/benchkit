@@ -1,0 +1,85 @@
+[build-system]
+requires = ["hatchling>=1.32", "hatch-vcs>=0.5"]
+build-backend = "hatchling.build"
+
+[project]
+name = "benchkit"
+description = "Manifest-driven LLM benchmark toolkit: git-managed cases -> Langfuse datasets/experiments, evaluator harness, authoring skills"
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["version"]
+authors = [{ name = "dvoid" }]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["llm", "benchmark", "evaluation", "evals", "testing", "ground-truth-isolation"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Testing",
+  "Typing :: Typed",
+]
+dependencies = [
+  "langfuse>=4.14,<5",
+  "jsonschema>=4.23",
+  "pyyaml>=6",
+  "click>=8.1",
+  "packaging>=23.2",
+  # imported directly by experiment.py/export.py; langfuse happens to pull it in today,
+  # but a direct import must be a direct dependency.
+  "httpx>=0.27",
+]
+
+[project.scripts]
+benchkit = "benchkit.cli:main"
+
+[project.urls]
+Repository = "https://github.com/dvoid-io/benchkit"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.11", "types-jsonschema", "types-PyYAML"]
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/benchkit/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/benchkit", "plugins", "tests", "README.md", "CONTRACT.md", "pyproject.toml"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/benchkit"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"plugins/benchkit" = "benchkit/_plugin"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+files = ["src/benchkit"]
+python_version = "3.11"
+# Not `strict` yet: 124 errors today, almost all missing annotations on click-decorated
+# CLI functions. This level is clean and guards the annotations that `py.typed` promises
+# downstream. Tighten incrementally rather than gating CI on a number nobody will pay down.
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true

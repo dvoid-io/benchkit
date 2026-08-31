@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dvoid-io/benchkit/schemas/item.schema.json",
+  "title": "DatasetItemSpec — what render(case) returns (contract 0.1 §3.1)",
+  "type": "object",
+  "required": ["id", "input"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "input": { "type": "object" },
+    "expected_output": { "type": ["object", "array", "string", "null"] },
+    "metadata": { "type": ["object", "null"] }
+  }
+}
