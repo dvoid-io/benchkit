@@ -29,7 +29,7 @@ benchkit = "benchkit.cli:main"
 Repository = "https://github.com/dvoid-io/benchkit"
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.8"]
+dev = ["pytest>=8", "ruff>=0.16.5"]
 
 [tool.hatch.version]
 source = "vcs"
