@@ -1,4 +1,7 @@
 name: ci
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -11,14 +14,15 @@ jobs:
       matrix:
         python: ["3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           python-version: ${{ matrix.python }}
           enable-cache: true
       - run: uv sync --frozen
       - run: uv run ruff check
+      - run: uv run mypy
       - run: uv run pytest
       - run: uv run benchkit --version

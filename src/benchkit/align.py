@@ -134,8 +134,9 @@ def assignment_key(
     """Identity of a hypothesis = set of (variable id, chosen candidate), both normalised.
     `var_map` renames model variable ids into oracle ids first; unmapped ids pass through."""
     assignments = hyp.get(assign_key) or {}
+    pairs: list[tuple[Any, Any]]
     if isinstance(assignments, Mapping):
-        pairs = assignments.items()
+        pairs = list(assignments.items())
     else:  # list of {variable, value} / {var, candidate}
         pairs = []
         for a in assignments:

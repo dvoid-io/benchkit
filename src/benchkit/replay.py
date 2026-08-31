@@ -146,8 +146,8 @@ class ReplayRow:
     def moved(self) -> bool:
         return bool(self.changed or self.added or self.removed)
 
-    def as_dict(self) -> dict:
-        d = {
+    def as_dict(self) -> dict[str, Any]:
+        d: dict[str, Any] = {
             "id": self.id,
             "scores": self.scores,
             "comments": self.comments,

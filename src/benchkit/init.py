@@ -6,6 +6,7 @@ import json
 import shutil
 from importlib import resources
 from pathlib import Path
+from typing import Any
 
 
 def plugin_root() -> Path:
@@ -37,7 +38,7 @@ def copy_skills(target_dir: Path | str) -> list[Path]:
     return copied
 
 
-_ORACLE_SCHEMA = {
+_ORACLE_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "{name} case (oracle) schema — edit me",
     "type": "object",
@@ -52,7 +53,7 @@ _ORACLE_SCHEMA = {
     },
 }
 
-_OUTPUT_SCHEMA = {
+_OUTPUT_SCHEMA: dict[str, Any] = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "{name} model output schema — edit me",
     "type": "object",
