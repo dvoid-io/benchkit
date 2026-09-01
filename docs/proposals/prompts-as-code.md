@@ -1,6 +1,6 @@
 # Proposal: prompts as code
 
-**Status**: proposal — not implemented. **Target**: contract 0.4.
+**Status**: proposal — not implemented. **Target**: contract 0.5 (0.4 shipped without it).
 
 benchkit versions cases, schemas, evaluators and runs in git, and fetches the *prompt* from a
 platform by name and label at run time. That asymmetry is the gap this proposes to close, in a
