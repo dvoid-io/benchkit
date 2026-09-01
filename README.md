@@ -76,6 +76,14 @@ and evaluators. benchkit owns validation, projection and replay. Neither imports
 internals — [`CONTRACT.md`](https://github.com/dvoid-io/benchkit/blob/main/CONTRACT.md) is the whole
 coupling. Scaffold one with `benchkit init`.
 
+## Credentials
+
+benchkit reads platform credentials from the process environment only — `LANGFUSE_BASE_URL`,
+`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` — and never from a file. There is no `.env` loader and
+no config-file credential path, so whatever populates the environment works unchanged: direnv, CI
+secrets, a secret manager, or your organisation's own tooling. `benchkit doctor` reports which
+variables are missing by name and never prints a value.
+
 ## Status
 
 `0.x`, Apache-2.0, built against one real benchmark and generalised on a hypothesis. The CLI and the
