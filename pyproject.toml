@@ -43,7 +43,7 @@ benchkit = "benchkit.cli:main"
 Repository = "https://github.com/dvoid-io/benchkit"
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.11", "types-jsonschema", "types-PyYAML"]
+dev = ["pytest>=8", "ruff>=0.16.8", "mypy>=1.11", "types-jsonschema", "types-PyYAML"]
 
 [tool.hatch.version]
 source = "vcs"
